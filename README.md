@@ -1,1 +1,1 @@
-# weather-planner
+# weather-dashboard
