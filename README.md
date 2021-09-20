@@ -18,3 +18,4 @@ https://1ance-301.github.io/weather-dashboard/
 - GitHub:(https://github.com/1ance-301)
 
 ## Website Screenshot
+![Screen Shot 2021-09-19 at 9 05 49 PM](https://user-images.githubusercontent.com/87950314/133949190-673775e5-ab7e-4ff4-ba2c-b046b1c62726.png)
