@@ -1,0 +1,43 @@
+
+/* header styles */
+header {
+    background-color: #3c43a5;
+}
+
+h1 {
+    color: azure;
+}
+
+/* search styles */
+#searchBar {
+    align-content: center;
+    
+}
+
+#searchCity {
+    width: 100%;
+}
+
+#searchBtn {
+    width: 100%;
+}
+
+#history {
+    border-top: 1px solid gray;
+}
+
+#historyItem {
+    background-color: gray;
+}
+/* daily weather styles */
+#dailyWeather {
+    border: solid 1px black;
+    height: 200px;
+}
+
+.daily {
+    width: 100%;
+    margin-left: 10px;
+}
+
+/* 5-day forcast */

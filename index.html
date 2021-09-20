@@ -4,9 +4,95 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Weather-Dashboard</title>
 </head>
 <body>
-    
+    <header>
+        <h1 class="text-center">Weather Dashboard</h1>
+    </header>
+
+    <main class="row">
+        <!-- search bar -->
+        <div id="searchBar" class="col-4">
+            <h2>Search for a City:</h2>
+            <input type="text" placeholder="Chicago" id="searchCity" class="mb-1">
+            <button id="searchBtn" class="btn btn-info">Search</button>
+            <div id="history" class="mt-2"></div>
+        </div>
+
+        <div class="col-8">
+            <!-- weather display -->
+            <div id="dailyWeather" class="row">
+                <div class="row">
+                    <h2 id="city" class="col-4 ml-1">Chicago</h2>
+                    <h2 id="date" class="col-4 ml-1"></h2>
+                    <div id="icon"></div>
+                </div>
+                <div id="temp" class="daily"></div>
+                <div id="wind" class="daily"></div>
+                <div id="humidity" class="daily"></div>
+                <div id="uvIndex" class="daily"></div>
+            </div>
+
+            <!-- 5-day forecast -->
+            <div class="row">
+                <h2>5-Day Forecast:</h2>
+            </div>
+            <div class="row">
+                <div id=day1 class="card text-white bg-primary mr-1">
+                    <div id="firstDay" class="card-header"></div>
+                    <div class="card-body">
+                        <div id = "firstIcon"></div>
+                        <div id="firstTemp"></div>
+                        <div id="firstWind"></div>
+                        <div id="firstHumidity"></div>
+                    </div>
+                </div>
+                <div id = "day2" class="card text-white bg-primary mr-1">
+                    <div id="secondDay" class="card-header"></div>
+                    <div class="card-body">
+                        <div id ="secondIcon"></div>
+                        <div id="secondTemp"></div>
+                        <div id="secondWind"></div>
+                        <div id="secondHumidity"></div>
+                    </div>
+                </div>
+                <div id = "day3" class="card text-white bg-primary mr-1">
+                    <div id="thirdDay" class="card-header"></div>
+                    <div class="card-body">
+                        <div id = "thirdIcon"></div>
+                        <div id="thirdTemp"></div>
+                        <div id="thirdWind"></div>
+                        <div id="thirdHumidity"></div>
+                    </div>
+                    
+                </div>
+                <div id = "day4" class="card text-white bg-primary mr-1">
+                    <div id="fourthDay" class="card-header"></div>
+                    <div class="card-body">
+                        <div id = "fourthIcon"></div>
+                        <div id="fourthTemp"></div>
+                        <div id="fourthWind"></div>
+                        <div id="fourthHumidity"></div>
+                    </div>
+                </div>
+                <div id = "day5" class="card text-white bg-primary">
+                    <div id="fifthDay" class="card-header"></div>
+                    <div class="card-body">
+                        <div id = "fifthIcon"></div>
+                        <div id="fifthTemp"></div>
+                        <div id="fifthWind"></div>
+                        <div id="fifthHumidity"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
