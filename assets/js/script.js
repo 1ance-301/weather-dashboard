@@ -4,7 +4,7 @@ var cityEL = "Chicago";
 $("#searchBtn").click(function(e) {
     e.preventDefault();
 
-    cityEL = document.getElementById("searchCity").value;
+    // document.getElementById("searchCity").value;
     document.querySelector("#city") = cityEL;
     saveCity(); 
 
@@ -57,85 +57,111 @@ lon =-94.04;
 // weather api fetch
 function fetchWeather() {
     var apiKey = "5b73c7b58353dc6f00e466e13a20a4a9"
-    var weatherApi = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,alerts&appid=" + apiKey;
+    var weatherApi = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + apiKey;
     fetch(weatherApi)
         .then((response) => {
-            if (!response.ok) {
-                alert("No weather found.")
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert("Network Error");
             }
-            return response.json();
         })
-        .then((data) => displayWeather(data));
+        .then(data => {
+            console.log(data);
+            displayWeather(data)
+        })
+        .catch((error) => console.error(error));
 };
 
 function displayWeather(data) {
     // current weather
-    var icon = object.current.weather[0];
-    var temp = object.current.temp;
-    var wind = object.current.wind_speed;
-    var humidity = object.current.humidity;
-    var index = object.current.uvi;
+    var temp = data.current.temp;
+    var wind = data.current.wind_speed;
+    var humidity = data.current.humidity;
+    var index = data.current.uvi;
 
-    document.querySelector("#temp").innerText = "Temp:" + temp + "°F";
-    document.querySelector("#wind").innerText = "Wind:" + wind + "mph";
-    document.querySelector("#humidity").innerText = "Humidity:" + humidity + "%";
-    document.querySelector("#uvIndex").innerText = "UV Index:" + index;
-    document.querySelector("#icon").src = "https://openweathermap.org/omg/wn/" + icon + ".png";
+    var icon = data.current.weather[0].icon;
+    var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#icon").attr("src", iconUrl);
 
+    document.querySelector("#temp").innerText = "Temp: " + temp + "°F";
+    document.querySelector("#wind").innerText = "Wind: " + wind + " mph";
+    document.querySelector("#humidity").innerText = "Humidity: " + humidity + "%";
+    
+    var indexEL = document.querySelector("#uvIndex")
+    indexEL.innerText = "UV Index: " + index;
+    if (index < "3") {
+        indexEL.style.backgroundColor = "green";
+    } else if (index >= "3" && index <= "7") {
+        indexEL.style.backgroundColor = "yellow";
+    } else if (index > "7") {
+        indexEL.style.backgroundColor = "red";
+    }
+    
     // first day forecast
-    var firstIcon = object.daily[0].weather[0];
-    var firstTemp = object.daily[0].temp.day;
-    var firstWind = object.daily[0].wind_speed;
-    var firstHumidity = object.daily[0].humidity;
+    var firstTemp = data.daily[0].temp.day;
+    var firstWind = data.daily[0].wind_speed;
+    var firstHumidity = data.daily[0].humidity;
 
-    document.querySelector("#firstTemp").innerText = "Temp:" + firstTemp + "°F";
-    document.querySelector("#firstWind").innerText = "Wind:" + firstWind + "mph";
-    document.querySelector("#firstHumidity").innerText = "Humidity:" + firstHumidity + "%";
-    document.querySelector("#firstIcon").src = "https://openweathermap.org/omg/wn/" + firstIcon + ".png";
+    document.querySelector("#firstTemp").innerText = "Temp: " + firstTemp + "°F";
+    document.querySelector("#firstWind").innerText = "Wind: " + firstWind + " mph";
+    document.querySelector("#firstHumidity").innerText = "Humidity: " + firstHumidity + "%";
+    
+    icon = data.daily[0].weather[0].icon;
+    iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#firstIcon").attr("src", iconUrl);
 
     // second day forecast
-    var secondIcon = object.daily[1].weather[0];
-    var secondTemp = object.daily[1].temp.day;
-    var secondWind = object.daily[1].wind_speed;
-    var secondHumidity = object.daily[1].humidity;
+    var secondTemp = data.daily[1].temp.day;
+    var secondWind = data.daily[1].wind_speed;
+    var secondHumidity = data.daily[1].humidity;
 
-    document.querySelector("#secondTemp").innerText = "Temp:" + secondTemp + "°F";
-    document.querySelector("#secondWind").innerText = "Wind:" + secondWind + "mph";
-    document.querySelector("#secondHumidity").innerText = "Humidity:" + secondHumidity + "%";
-    document.querySelector("#secondIcon").src = "https://openweathermap.org/omg/wn/" + secondIcon + ".png";
+    document.querySelector("#secondTemp").innerText = "Temp: " + secondTemp + "°F";
+    document.querySelector("#secondWind").innerText = "Wind: " + secondWind + " mph";
+    document.querySelector("#secondHumidity").innerText = "Humidity: " + secondHumidity + "%";
+
+    icon = data.daily[1].weather[0].icon;
+    iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#secondIcon").attr("src", iconUrl);
 
     // third day forecast
-    var thirdIcon = object.daily[2].weather[0];
-    var thirdTemp = object.daily[2].temp.day;
-    var thirdWind = object.daily[2].wind_speed;
-    var thirdHumidity = object.daily[2].humidity;
+    var thirdTemp = data.daily[2].temp.day;
+    var thirdWind = data.daily[2].wind_speed;
+    var thirdHumidity = data.daily[2].humidity;
 
-    document.querySelector("#thirdTemp").innerText = "Temp:" + thirdTemp + "°F";
-    document.querySelector("#thirdWind").innerText = "Wind:" + thirdWind + "mph";
-    document.querySelector("#thirdHumidity").innerText = "Humidity:" + thirdHumidity + "%";
-    document.querySelector("#thirdIcon").src = "https://openweathermap.org/omg/wn/" + thirdIcon + ".png";
+    document.querySelector("#thirdTemp").innerText = "Temp: " + thirdTemp + "°F";
+    document.querySelector("#thirdWind").innerText = "Wind: " + thirdWind + " mph";
+    document.querySelector("#thirdHumidity").innerText = "Humidity: " + thirdHumidity + "%";
+    
+    icon = data.daily[2].weather[0].icon;
+    iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#thirdIcon").attr("src", iconUrl);
 
     // fourth day forecast
-    var fourthIcon = object.daily[3].weather[0];
-    var fourthTemp = object.daily[3].temp.day;
-    var fourthWind = object.daily[3].wind_speed;
-    var fourthHumidity = object.daily[3].humidity;
+    var fourthTemp = data.daily[3].temp.day;
+    var fourthWind = data.daily[3].wind_speed;
+    var fourthHumidity = data.daily[3].humidity;
 
-    document.querySelector("#fourthTemp").innerText = "Temp:" + fourthTemp + "°F";
-    document.querySelector("#fourthWind").innerText = "Wind:" + fourthWind + "mph";
-    document.querySelector("#fourthHumidity").innerText = "Humidity:" + fourthHumidity + "%";
-    document.querySelector("#fourthIcon").src = "https://openweathermap.org/omg/wn/" + fourthIcon + ".png";
+    document.querySelector("#fourthTemp").innerText = "Temp: " + fourthTemp + "°F";
+    document.querySelector("#fourthWind").innerText = "Wind: " + fourthWind + " mph";
+    document.querySelector("#fourthHumidity").innerText = "Humidity: " + fourthHumidity + "%";
+    
+    icon = data.daily[3].weather[0].icon;
+    iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#fourthIcon").attr("src", iconUrl);
 
     // fifth day forecast
-    var fifthIcon = object.daily[4].weather[0];
-    var fifthTemp = object.daily[4].temp.day;
-    var fifthWind = object.daily[4].wind_speed;
-    var fifthHumidity = object.daily[4].humidity;
+    var fifthTemp = data.daily[4].temp.day;
+    var fifthWind = data.daily[4].wind_speed;
+    var fifthHumidity = data.daily[4].humidity;
 
-    document.querySelector("#fifthTemp").innerText = "Temp:" + fifthTemp + "°F";
-    document.querySelector("#fifthWind").innerText = "Wind:" + fifthWind + "mph";
-    document.querySelector("#fifthHumidity").innerText = "Humidity:" + fifthHumidity + "%";
-    document.querySelector("#fifthIcon").src = "https://openweathermap.org/omg/wn/" + fifthIcon + ".png";
+    document.querySelector("#fifthTemp").innerText = "Temp: " + fifthTemp + "°F";
+    document.querySelector("#fifthWind").innerText = "Wind: " + fifthWind + " mph";
+    document.querySelector("#fifthHumidity").innerText = "Humidity: " + fifthHumidity + "%";
+    
+    icon = data.daily[4].weather[0].icon;
+    iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+    $("#fifthIcon").attr("src", iconUrl);
 }
 
 fetchWeather();
