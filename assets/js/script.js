@@ -1,38 +1,69 @@
-var cityEL = "Chicago";
+var apiKey = "5b73c7b58353dc6f00e466e13a20a4a9"
+
+var cityEL = "";
 
 // funtion to save recent cities
 $("#searchBtn").click(function(e) {
     e.preventDefault();
 
-    // document.getElementById("searchCity").value;
-    document.querySelector("#city") = cityEL;
-    saveCity(); 
+    cityEL = $("#searchCity").val();
+    cities.push(cityEL);
 
-    fetchWeather();
+    saveCity();
+
+    cityCor(cityEL);
 });
+
+// fetch call to turn city name into lat and lon
+function cityCor(cityEl) {
+    var cityApi = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEL + ",840&appid=" + apiKey;
+    fetch(cityApi)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert("Network Error");
+            }
+        })
+        .then(data => {
+            getCor(data)
+        })
+        .catch((error) => console.error(error));
+};
+
+
+function getCor(data) {
+    lat = data[0].lat;
+    lon = data[0].lon;
+    var name = data[0].name;
+
+    $("#city").text(name);
+    fetchWeather(lat,lon);
+} 
+
+var cities = [];
+var history = document.getElementById("history");
 
 // local storage function
 function saveCity() {
-    if (localStorage.getItem("city") == null) {
-        localStorage.setItem("city", "[]");
-    }
+    localStorage.setItem("city", JSON.stringify(cities));
+    var retrievedCity = localStorage.getItem("city");
+    var citiesEL = JSON.parse(retrievedCity);
 
-    var storedCity = JSON.parse(localStorage.getItem("city"));
-    storedCity.push(cityEL);
-
-    localStorage.setItem("city", JSON.stringify(cityEL));
+    citiesEL.forEach((item) => {
+        var button = document.createElement("button");
+        button.innerText = item;
+        var att = document.createAttribute("onclick");
+        att.value = "cityCor(" + item + ")";
+        button.setAttributeNode(att);
+        console.log(button);
+        history.appendChild(button);
+    })
 };
-
-// function to display data
-function displayCity() {
-    if (localStorage.getItem("city") != null) {
-        $("#history").html = JSON.parse(localStorage.getItem("city"));
-    }
-}
 
 // funtion to display current date
 var currentDate = moment().format('L');
-$( "h2#date").html("(" + currentDate + ")");
+$( "#date").html("(" + currentDate + ")");
 
 // funtion to display first date
 var firstDate = moment().add(1, "days").format("L");
@@ -51,12 +82,8 @@ var fifthDate = moment().add(5, "days").format("L");
 $("#fifthDay").html("(" + fifthDate + ")");
 
 
-lat =33.44;
-lon =-94.04;
-
 // weather api fetch
-function fetchWeather() {
-    var apiKey = "5b73c7b58353dc6f00e466e13a20a4a9"
+function fetchWeather(lat,lon) {
     var weatherApi = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + apiKey;
     fetch(weatherApi)
         .then((response) => {
@@ -67,7 +94,6 @@ function fetchWeather() {
             }
         })
         .then(data => {
-            console.log(data);
             displayWeather(data)
         })
         .catch((error) => console.error(error));
@@ -91,11 +117,11 @@ function displayWeather(data) {
     var indexEL = document.querySelector("#uvIndex")
     indexEL.innerText = "UV Index: " + index;
     if (index < "3") {
-        indexEL.style.backgroundColor = "green";
-    } else if (index >= "3" && index <= "7") {
-        indexEL.style.backgroundColor = "yellow";
-    } else if (index > "7") {
-        indexEL.style.backgroundColor = "red";
+        indexEL.style.color = "green";
+    } else if (index >= "3" && index < "8") {
+        indexEL.style.color = "yellow";
+    } else if (index >= "8") {
+        indexEL.style.color = "red";
     }
     
     // first day forecast
@@ -164,4 +190,4 @@ function displayWeather(data) {
     $("#fifthIcon").attr("src", iconUrl);
 }
 
-fetchWeather();
+fetchWeather("33.44", "-94.04");
