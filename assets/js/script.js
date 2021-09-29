@@ -39,24 +39,30 @@ function getCor(data) {
 
     $("#city").text(name);
     fetchWeather(lat,lon);
-} 
+};
+
+function clearHistory() {
+    history.innerHTML = '';
+}
 
 var cities = [];
-var history = document.getElementById("history");
 
 // local storage function
 function saveCity() {
     localStorage.setItem("city", JSON.stringify(cities));
+
+    $('#history').empty();
+
     var retrievedCity = localStorage.getItem("city");
     var citiesEL = JSON.parse(retrievedCity);
 
     citiesEL.forEach((item) => {
+        var history = document.getElementById("history");
         var button = document.createElement("button");
         button.innerText = item;
-        var att = document.createAttribute("onclick");
-        att.value = "cityCor(" + item + ")";
-        button.setAttributeNode(att);
-        console.log(button);
+        var style = document.createAttribute("class");
+        style.value = "btn btn-secondary";
+        button.setAttributeNode(style);
         history.appendChild(button);
     })
 };

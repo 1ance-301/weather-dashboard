@@ -26,8 +26,9 @@ h1 {
     border-top: 1px solid gray;
 }
 
-#historyItem {
-    background-color: gray;
+.btn-secondary {
+    margin: 10px;
+    width: 100%;
 }
 /* daily weather styles */
 #dailyWeather {
