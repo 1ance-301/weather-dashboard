@@ -16,7 +16,7 @@ $("#searchBtn").click(function(e) {
 
 // fetch call to turn city name into lat and lon
 function cityCor(cityEl) {
-    var cityApi = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEL + ",840&appid=" + apiKey;
+    var cityApi = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityEL + ",840&appid=" + apiKey;
     fetch(cityApi)
         .then((response) => {
             if (response.ok) {
